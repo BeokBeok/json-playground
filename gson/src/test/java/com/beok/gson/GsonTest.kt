@@ -34,4 +34,18 @@ class GsonTest {
         assertEquals(expected = gson.e, actual = 1)
         assertEquals(expected = gson.data.bb.size, actual = 3)
     }
+
+    @Test
+    fun `특정 필드가 없다면 기본값`() {
+        val gson = Gson().fromJson(
+            File("src/test/resources/test2.json").readText(),
+            GsonResponse.First::class.java
+        )
+
+        assertEquals(expected = gson.a, actual = "a")
+        assertEquals(expected = gson.b, actual = "")
+        assertEquals(expected = gson.c, actual = "")
+        assertEquals(expected = gson.e, actual = 0)
+        assertEquals(expected = gson.data.aa.size, actual = 2)
+    }
 }
