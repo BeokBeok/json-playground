@@ -1,10 +1,15 @@
 package com.beok.moshi
 
 import com.beok.moshi.model.MoshiResponse
+import com.beok.moshi.model.Time
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
+import com.squareup.moshi.addAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.io.File
+import java.util.Date
 import kotlin.test.assertEquals
+import org.joda.time.DateTime
 import org.junit.Test
 
 class MoshiTest {
@@ -51,5 +56,17 @@ class MoshiTest {
         assertEquals(expected = moshi?.c, actual = "")
         assertEquals(expected = moshi?.e, actual = 0)
         assertEquals(expected = moshi?.data?.aa?.size, actual = 2)
+    }
+
+    @Test
+    fun jodaTime() {
+        val moshi = Moshi.Builder()
+            .add(KotlinJsonAdapterFactory())
+            .add(Date::class.java, Rfc3339DateJsonAdapter())
+            .build()
+            .adapter(Time::class.java)
+            .fromJson(File("src/test/resources/test3.json").readText())
+
+        assertEquals(expected = 1690208913003, actual = moshi?.time?.time)
     }
 }

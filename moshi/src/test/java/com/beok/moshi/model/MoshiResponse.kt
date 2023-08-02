@@ -1,6 +1,7 @@
 package com.beok.moshi.model
 
 import com.squareup.moshi.JsonClass
+import java.util.Date
 
 sealed class MoshiResponse constructor(
     open val a: String,
@@ -53,4 +54,8 @@ data class SecondData(
 
 data class Count(
     val count: Int
+)
+
+data class Time(
+    val time: Date
 )

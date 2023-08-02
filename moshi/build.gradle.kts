@@ -8,5 +8,7 @@ dependencies {
     implementation("com.squareup.moshi:moshi-adapters:1.12.0")
     ksp("com.squareup.moshi:moshi-kotlin-codegen:1.12.0")
 
+    implementation("joda-time:joda-time:2.12.5")
+
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.9.0")
 }
