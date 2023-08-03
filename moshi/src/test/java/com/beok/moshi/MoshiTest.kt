@@ -1,15 +1,15 @@
 package com.beok.moshi
 
+import com.beok.moshi.model.DisplayModel
+import com.beok.moshi.model.DisplayModelAdapter
 import com.beok.moshi.model.MoshiResponse
 import com.beok.moshi.model.Time
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
-import com.squareup.moshi.addAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import java.io.File
 import java.util.Date
 import kotlin.test.assertEquals
-import org.joda.time.DateTime
 import org.junit.Test
 
 class MoshiTest {
@@ -68,5 +68,21 @@ class MoshiTest {
             .fromJson(File("src/test/resources/test3.json").readText())
 
         assertEquals(expected = 1690208913003, actual = moshi?.time?.time)
+    }
+
+    @Test
+    fun `Response를 내가 원하는 Model로 변환합니다`() {
+        val moshi = Moshi.Builder()
+            .add(DisplayModelAdapter())
+            .add(KotlinJsonAdapterFactory())
+            .build()
+            .adapter(DisplayModel::class.java)
+            .fromJson(File("src/test/resources/test.json").readText())
+
+        assertEquals(expected = 0, actual = moshi?.id)
+        assertEquals(expected = "b", actual = moshi?.description)
+        assertEquals(expected = 2, actual = moshi?.displays?.size)
+        assertEquals(expected = "title1", actual = moshi?.displays?.firstOrNull())
+        assertEquals(expected = "title2", actual = moshi?.displays?.lastOrNull())
     }
 }
