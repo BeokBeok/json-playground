@@ -15,7 +15,7 @@ sealed class SerializationResponse constructor(
     open val e: Int = -1,
 ) {
     @Serializable
-    data class First(
+    data class First constructor(
         override val a: String,
         override val b: String = "",
         override val c: String = "",
@@ -29,7 +29,7 @@ sealed class SerializationResponse constructor(
     )
 
     @Serializable
-    data class Second(
+    data class Second constructor(
         override val a: String,
         override val b: String,
         override val c: String,
