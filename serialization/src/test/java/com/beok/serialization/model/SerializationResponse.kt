@@ -1,6 +1,5 @@
 package com.beok.serialization.model
 
-import java.util.Date
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 
@@ -62,8 +61,4 @@ data class SecondData(
 @Serializable
 data class Count(
     val count: Int
-)
-
-data class Time(
-    val time: Date
 )
