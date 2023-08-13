@@ -17,3 +17,4 @@ rootProject.name = "json-playground"
 include(":app")
 include(":gson")
 include(":moshi")
+include(":serialization")
