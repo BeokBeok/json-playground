@@ -2,7 +2,9 @@ package com.beok.serialization
 
 import com.beok.serialization.model.DisplayModelSerializer
 import com.beok.serialization.model.SerializationResponse
+import com.beok.serialization.model.Time
 import java.io.File
+import java.util.Date
 import kotlin.test.assertEquals
 import kotlinx.serialization.json.Json
 import org.junit.Test
@@ -48,6 +50,15 @@ class SerializationTest {
         assertEquals(expected = serialization.c, actual = "")
         assertEquals(expected = serialization.e, actual = 0)
         assertEquals(expected = serialization.data.aa.size, actual = 2)
+    }
+
+    @Test
+    fun `long을 Date로 변환합니다`() {
+        val serialization = Json.decodeFromString<Time>(
+            File("src/test/resources/test3.json").readText()
+        )
+
+        assertEquals(expected = Date(1690208913003), actual = serialization.time)
     }
 
     @Test
