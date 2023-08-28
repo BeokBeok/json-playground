@@ -1,6 +1,7 @@
 package com.beok.serialization
 
 import com.beok.serialization.model.DisplayModelSerializer
+import com.beok.serialization.model.DisplayModelSerializer2
 import com.beok.serialization.model.SerializationResponse
 import com.beok.serialization.model.Time
 import java.io.File
@@ -65,6 +66,20 @@ class SerializationTest {
     fun `Response를 내가 원하는 Model로 변환합니다`() {
         val serialization = Json.decodeFromString(
             deserializer = DisplayModelSerializer(),
+            string = File("src/test/resources/test.json").readText()
+        )
+
+        assertEquals(expected = 0, actual = serialization.id)
+        assertEquals(expected = "b", actual = serialization.description)
+        assertEquals(expected = 2, actual = serialization.displays.size)
+        assertEquals(expected = "title1", actual = serialization.displays.firstOrNull())
+        assertEquals(expected = "title2", actual = serialization.displays.lastOrNull())
+    }
+
+    @Test
+    fun `Response 모델이 없어도 원하는 Model로 변환합니다`() {
+        val serialization = Json.decodeFromString(
+            deserializer = DisplayModelSerializer2(),
             string = File("src/test/resources/test.json").readText()
         )
 
