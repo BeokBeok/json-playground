@@ -7,7 +7,13 @@ import com.beok.serialization.model.Time
 import java.io.File
 import java.util.Date
 import kotlin.test.assertEquals
+import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonPrimitive
 import org.junit.Test
 
 class SerializationTest {
@@ -88,5 +94,35 @@ class SerializationTest {
         assertEquals(expected = 2, actual = serialization.displays.size)
         assertEquals(expected = "title1", actual = serialization.displays.firstOrNull())
         assertEquals(expected = "title2", actual = serialization.displays.lastOrNull())
+    }
+
+    @Test
+    fun `지수를 Long 타입으로 변환합니다`() {
+        val jsonText = """
+            {
+                "timeSaleEndTime": 1.6974324E12
+            }
+        """.trimIndent()
+
+        val serialization = Json.decodeFromString<TimeSaleEndTime>(jsonText)
+
+        assertEquals(expected = 1697432400000, actual = serialization.timeSaleEndTime)
+    }
+
+    @Serializable
+    data class TimeSaleEndTime(
+        @Serializable(with = ExponentialAsLongSerializer::class)
+        val timeSaleEndTime: Long
+    )
+
+    object ExponentialAsLongSerializer : KSerializer<Long> {
+        override val descriptor: SerialDescriptor
+            get() = JsonPrimitive.serializer().descriptor
+
+        override fun serialize(encoder: Encoder, value: Long) = Unit
+
+        override fun deserialize(decoder: Decoder): Long {
+            return decoder.decodeDouble().toLong()
+        }
     }
 }

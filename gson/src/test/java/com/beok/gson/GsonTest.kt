@@ -48,4 +48,24 @@ class GsonTest {
         assertEquals(expected = gson.e, actual = 0)
         assertEquals(expected = gson.data.aa.size, actual = 2)
     }
+
+    @Test
+    fun `지수를 Long 타입으로 변환합니다`() {
+        val jsonText = """
+            {
+                "timeSaleEndTime": 1.6974324E12
+            }
+        """.trimIndent()
+
+        val gson = Gson().fromJson(
+            jsonText,
+            TimeSaleEndTime::class.java
+        )
+
+        assertEquals(expected = 1697432400000, actual = gson.timeSaleEndTime)
+    }
+
+    data class TimeSaleEndTime(
+        val timeSaleEndTime: Long
+    )
 }
